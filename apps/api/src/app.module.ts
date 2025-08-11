@@ -1,5 +1,4 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { AppController } from './app.controller';
 import { GraphQLModule } from '@nestjs/graphql';
 import { HelloResolver } from './hello.resolver';
 import { Module } from '@nestjs/common';
@@ -16,9 +15,6 @@ import { Module } from '@nestjs/common';
       introspection: true
 
     })
-  ],
-  controllers: [
-    AppController
   ],
   providers: [
     HelloResolver
