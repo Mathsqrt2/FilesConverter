@@ -1,0 +1,40 @@
+x-scheduler-base: &scheduler-base
+    container_name: scheduler
+    restart: always
+    tty: true
+    volumes:
+        - file-converter-logs:/usr/src/app/logs
+    networks:
+        - files-converter-network
+
+services:
+    scheduler-dev:
+        <<: *scheduler-base
+        profiles: [dev]
+        build:
+            context: ../
+            target: development
+            dockerfile: ./docker/Dockerfile
+        volumes:
+            - ../backend:/usr/src/app
+            - /usr/src/app/node_modules
+            - file-converter-logs:/usr/src/app/logs
+            - file-converter-pnpm:/usr/src/app/.pnpm-store
+        depends_on:
+            - rabbitmq-dev
+            - database-dev
+            - minio-dev
+        command: npm run scheduler:dev
+
+    scheduler-prod:
+        <<: *scheduler-base
+        profiles: [prod]
+        build:
+            context: ../
+            target: production
+            dockerfile: ./docker/Dockerfile
+        depends_on:
+            - rabbitmq-prod
+            - database-prod
+            - minio-prod
+        command: npm run scheduler:prod

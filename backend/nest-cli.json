@@ -108,6 +108,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/video-converter/tsconfig.app.json"
       }
+    },
+    "zip-packer": {
+      "type": "application",
+      "root": "apps/zip-packer",
+      "entryFile": "main",
+      "sourceRoot": "apps/zip-packer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/zip-packer/tsconfig.app.json"
+      }
     }
   }
 }

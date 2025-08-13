@@ -1,14 +1,11 @@
 x-zip-packer-base: &zip-packer-base
     tty: true
     restart: always
+    cpus: 1
+    mem_limit: 1g
+    memswap_limit: 2g
     volumes:
         - file-converter-logs:/usr/src/app/logs
-    deploy:
-        mode: replicated
-        replicas: 3
-    cpus: 1
-    mem_limit: "1g"
-    memswap_limit: "2g"
     networks:
         - files-converter-network
 
@@ -16,9 +13,34 @@ services:
     zip-packer-dev:
         <<: *zip-packer-base
         profiles: [dev]
-        command: npm run start:dev
+        build:
+            context: ../
+            target: development
+            dockerfile: ./docker/Dockerfile
+        volumes:
+            - ../backend:/usr/src/app
+            - /usr/src/app/node_modules
+            - file-converter-logs:/usr/src/app/logs
+            - file-converter-pnpm:/usr/src/app/.pnpm-store
+        command: npm run zip-packer:dev
+        depends_on:
+            - minio-dev
+            - rabbitmq-dev
+        deploy:
+            mode: replicated
+            replicas: 1
 
     zip-packer-prod:
         <<: *zip-packer-base
         profiles: [prod]
-        command: npm run start:prod
+        build:
+            context: ../
+            target: production
+            dockerfile: ./docker/Dockerfile
+        command: npm run zip-packer:prod
+        depends_on:
+            - minio-prod
+            - rabbitmq-prod
+        deploy:
+            mode: replicated
+            replicas: 3

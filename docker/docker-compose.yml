@@ -1,18 +1,21 @@
+name: file-converter
 include:
-  # - files-converter.api.yml
-  # - files-converter.audio-converter.yml
-  # - files-converter.image-converter.yml
+  - files-converter.api.yml
+  - files-converter.audio-converter.yml
+  - files-converter.image-converter.yml
+  - files-converter.video-converter.yml
+  - files-converter.zip-packer.yml
   - files-converter.database.yml
   - files-converter.minio.yml
   - files-converter.rabbitmq.yml
-  # - files-converter.scheduler.yml
-  # - files-converter.video-converter.yml
+  - files-converter.scheduler.yml
   
 volumes:
   file-converter-database-data:
   file-converter-rabbitmq-data:
   file-converter-minio:
   file-converter-logs:
+  file-converter-pnpm:
 
 networks:
   files-converter-network:

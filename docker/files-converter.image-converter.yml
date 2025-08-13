@@ -1,0 +1,46 @@
+x-image-converter-base: &image-converter-base
+    tty: true
+    restart: always
+    cpus: 1
+    mem_limit: 1g
+    memswap_limit: 2g
+    volumes:
+        - file-converter-logs:/usr/src/app/logs
+    networks:
+        - files-converter-network
+
+services:
+    image-converter-dev:
+        <<: *image-converter-base
+        profiles: [dev]
+        build:
+            context: ../
+            target: development
+            dockerfile: ./docker/Dockerfile.image-converter
+        volumes:
+            - ../backend:/usr/src/app
+            - /usr/src/app/node_modules
+            - file-converter-logs:/usr/src/app/logs
+            - file-converter-pnpm:/usr/src/app/.pnpm-store
+        command: npm run image-converter:dev
+        depends_on:
+            - minio-dev
+            - rabbitmq-dev
+        deploy:
+            mode: replicated
+            replicas: 1
+
+    image-converter-prod:
+        <<: *image-converter-base
+        profiles: [prod]
+        build:
+            context: ../
+            target: production
+            dockerfile: ./docker/Dockerfile.image-converter
+        command: npm run image-converter:prod
+        depends_on:
+            - minio-prod
+            - rabbitmq-prod
+        deploy:
+            mode: replicated
+            replicas: 3
