@@ -1,0 +1,24 @@
+x-audio-converter-base: &audio-converter-base
+    tty: true
+    restart: always
+    volumes:
+        - file-converter-logs:/usr/src/app/logs
+    deploy:
+        mode: replicated
+        replicas: 3
+    cpus: 1
+    mem_limit: "1g"
+    memswap_limit: "2g"
+    networks:
+        - files-converter-network
+
+services:
+    audio-converter-dev:
+        <<: *audio-converter-base
+        profiles: [dev]
+        command: npm run start:dev
+
+    audio-converter-prod:
+        <<: *audio-converter-base
+        profiles: [prod]
+        command: npm run start:prod

@@ -1,0 +1,26 @@
+x-rabbitmq-base: &rabbitmq-base
+    image: rabbitmq:3.9-management
+    container_name: rabbitmq
+    restart: always
+    tty: true
+    environment:
+        - RABBITMQ_DEFAULT_USER=radmin
+        - RABBITMQ_DEFAULT_PASS=RABBITMQ_PASSWORD123
+    networks:
+        - files-converter-network
+
+services:
+    rabbitmq-dev:
+        <<: *rabbitmq-base
+        profiles: [dev]
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+        expose:
+            - 5672
+        volumes:
+            - file-converter-rabbitmq-data:/var/lib/rabbitmq
+
+    rabbitmq-prod:
+        <<: *rabbitmq-base
+        profiles: [prod]

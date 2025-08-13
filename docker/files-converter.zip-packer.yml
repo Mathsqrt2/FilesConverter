@@ -1,0 +1,24 @@
+x-zip-packer-base: &zip-packer-base
+    tty: true
+    restart: always
+    volumes:
+        - file-converter-logs:/usr/src/app/logs
+    deploy:
+        mode: replicated
+        replicas: 3
+    cpus: 1
+    mem_limit: "1g"
+    memswap_limit: "2g"
+    networks:
+        - files-converter-network
+
+services:
+    zip-packer-dev:
+        <<: *zip-packer-base
+        profiles: [dev]
+        command: npm run start:dev
+
+    zip-packer-prod:
+        <<: *zip-packer-base
+        profiles: [prod]
+        command: npm run start:prod

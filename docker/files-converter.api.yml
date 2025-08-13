@@ -1,0 +1,25 @@
+x-api-base: &api-base
+    container-name: api
+    command: ["node", "dist/apps/api/main.js"]
+    restart: always
+    tty: true
+    networks:
+        - files-converter-network
+
+services:
+    api-dev:
+        <<: *api-base
+        profiles: [dev]
+        depends_on:
+            - rabbitmq-dev
+            - database-dev
+            - minio-dev
+        command: npm run start:dev
+
+    api-prod:
+        <<: *api-base
+        profiles: [prod]
+        depends_on:
+            - rabbitmq-prod
+            - database-prod
+            - minio-prod

@@ -1,0 +1,3 @@
+ARG IMAGE=node:22
+
+FROM $IMAGE AS builder

@@ -1,0 +1,24 @@
+x-database-base: &database-base
+    image: postgres:15
+    container_name: database
+    restart: always
+    tty: true
+    environment:
+        POSTGRES_USER: admin
+        POSTGRES_PASSWORD: postgres-password
+        POSTGRES_DB: files-converter-database
+    networks:
+        - files-converter-network
+    volumes:
+        - file-converter-database-data:/var/lib/postgresql/data
+
+services:
+    database-dev:
+        <<: *database-base
+        profiles: [dev]
+        ports:
+            - "5432:5432"
+
+    database-prod:
+        <<: *database-base
+        profiles: [prod]
