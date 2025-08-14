@@ -1,2 +1,2 @@
-export * from './enums.module';
-export * from './enums.service';
+export * from './rabbit-mq-queues';
+export * from './encoding.enum';

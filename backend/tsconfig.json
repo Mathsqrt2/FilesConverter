@@ -17,6 +17,11 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
+    "types": [
+      "node",
+      "jest",
+      "./.env.d.ts"
+    ],
     "paths": {
       "@libs/database": [
         "libs/database/src"

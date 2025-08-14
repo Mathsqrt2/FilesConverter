@@ -1,8 +1,30 @@
-import { NestFactory } from '@nestjs/core';
+import { RmqUrl } from '@nestjs/microservices/external/rmq-url.interface';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { ZipPackerModule } from './zip-packer.module';
+import { RabbitMQQueues } from '@libs/enums';
+import { NestFactory } from '@nestjs/core';
 
 async function bootstrap() {
-  const app = await NestFactory.create(ZipPackerModule);
-  await app.listen(process.env.port ?? 3000);
+
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(ZipPackerModule, {
+    transport: Transport.RMQ,
+    options: {
+      urls: [process.env.RABBITMQ_URL as RmqUrl],
+      queue: RabbitMQQueues.ZIP_PACKER_QUEUE,
+      queueOptions: {
+        durable: true,
+      },
+      noAck: false,
+      prefetchCount: 1,
+      persistent: true,
+      socketOptions: {
+        heartbeatIntervalInSeconds: 360,
+        reconnectTimeInSeconds: 20,
+      }
+    }
+  });
+
+  await app.listen();
 }
+
 bootstrap();

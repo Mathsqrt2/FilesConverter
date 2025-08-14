@@ -11,6 +11,8 @@ services:
     scheduler-dev:
         <<: *scheduler-base
         profiles: [dev]
+        env_file:
+            - ../backend/.env.dev
         build:
             context: ../
             target: development

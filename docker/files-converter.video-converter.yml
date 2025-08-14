@@ -13,6 +13,8 @@ services:
     video-converter-dev:
         <<: *video-converter-base
         profiles: [dev]
+        env_file:
+            - ../backend/.env.dev
         build:
             context: ../
             target: development

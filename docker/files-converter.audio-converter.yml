@@ -13,6 +13,8 @@ services:
     audio-converter-dev:
         <<: *audio-converter-base
         profiles: [dev]
+        env_file:
+            - ../backend/.env.dev
         build:
             context: ../
             target: development
