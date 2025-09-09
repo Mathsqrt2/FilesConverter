@@ -13,8 +13,8 @@ export class S3Service {
     constructor(
         @InjectLogger(S3Service) private readonly logger: LoggerService,
     ) {
+        const startTime = Date.now();
         try {
-
             this.s3 = new Client({
                 endPoint: process.env.MINIO_ENDPOINT,
                 port: +process.env.MINIO_PORT,
@@ -22,10 +22,8 @@ export class S3Service {
                 accessKey: process.env.MINIO_ACCESS_KEY,
                 secretKey: process.env.MINIO_SECRET_KEY,
             });
-
-            this.createBucket(`${Date.now()}`)
         } catch (error) {
-            this.logger.error(`Failed to initialize S3 connection.`, { error });
+            this.logger.error(`Failed to initialize S3 connection.`, { error, startTime });
         }
     }
 
@@ -103,20 +101,6 @@ export class S3Service {
             this.logger.error(`Failed to check if there exists bucket with specified suffix ${prefix}`, { error });
             return null;
         }
-    }
-
-    private setPolicyFor(bucket: string): string {
-        return JSON.stringify({
-            Version: "2012-10-17",
-            Statement: [
-                {
-                    Effect: "Allow",
-                    Principal: { AWS: ["*"] },
-                    Action: ["s3:GetObject"],
-                    Resource: [`arn:aws:s3:::${bucket}/*`]
-                }
-            ]
-        })
     }
 
     public async putObject(bucketName: string, objectName: string, data: Buffer | Stream.Readable): Promise<string> {

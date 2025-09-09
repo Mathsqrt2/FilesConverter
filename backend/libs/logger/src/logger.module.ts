@@ -13,6 +13,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 })
 
 export class LoggerModule {
+  
   static forFeature(targets: Type<any>[]): DynamicModule {
     const providers = targets.map((target) => ({
       provide: getLoggerToken(target),
