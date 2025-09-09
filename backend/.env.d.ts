@@ -8,5 +8,10 @@ declare namespace NodeJS {
     RABBITMQ_ADMIN_PORT: string;
     RABBITMQ_URL: string;
 
+    MINIO_ENDPOINT: string,
+    MINIO_PORT: number,
+    MINIO_ACCESS_KEY: string,
+    MINIO_SECRET_KEY: string,
+
   }
 }

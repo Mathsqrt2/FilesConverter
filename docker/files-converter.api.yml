@@ -6,6 +6,10 @@ x-api-base: &api-base
         - file-converter-logs:/usr/src/app/logs
     networks:
         - files-converter-network
+    ports:
+        - "3000:3000"
+    expose: 
+        - 3000
 
 services:
     api-dev:

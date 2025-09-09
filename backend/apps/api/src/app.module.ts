@@ -1,7 +1,8 @@
+import { graphqlUploadExpress } from 'graphql-upload/graphqlUploadExpress';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { GraphQLModule } from '@nestjs/graphql';
 import { HelloResolver } from './hello.resolver';
-import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
 
 @Module({
   imports: [
@@ -11,9 +12,8 @@ import { Module } from '@nestjs/common';
       autoSchemaFile: true,
       csrfPrevention: false,
       sortSchema: true,
-      path: `graphql`,
+      path: `api/v1/graphql`,
       introspection: true
-
     })
   ],
   providers: [
@@ -21,4 +21,12 @@ import { Module } from '@nestjs/common';
   ],
 })
 
-export class AppModule { }
+export class AppModule implements NestModule {
+
+  public async configure(consumer: MiddlewareConsumer): Promise<void> {
+    consumer
+      .apply(graphqlUploadExpress())
+      .forRoutes(`api/v1/graphql`)
+  }
+
+}

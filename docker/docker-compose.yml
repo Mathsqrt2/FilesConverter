@@ -13,9 +13,10 @@ include:
 volumes:
   file-converter-database-data:
   file-converter-rabbitmq-data:
-  file-converter-minio:
   file-converter-logs:
   file-converter-pnpm:
+  minio-config:
+  minio-data:
 
 networks:
   files-converter-network:
