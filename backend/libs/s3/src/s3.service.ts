@@ -1,9 +1,9 @@
 import { BucketItemFromList, BucketItemStat, Client, RemoveOptions } from 'minio';
+import { InjectLogger } from '@libs/logger/logger.decorator';
 import { LoggerService } from '@libs/logger';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from "uuid"
 import Stream from 'stream';
-import { resolve } from 'path';
 
 @Injectable()
 export class S3Service {
@@ -11,7 +11,7 @@ export class S3Service {
     private s3: Client;
 
     constructor(
-        private readonly logger: LoggerService,
+        @InjectLogger(S3Service) private readonly logger: LoggerService,
     ) {
         try {
 
@@ -162,7 +162,7 @@ export class S3Service {
                 stream.on('end', () => resolve(Buffer.concat(chunks)));
                 stream.on('error', reject);
             } catch (error) {
-                this.logger.error(`Failed to get `, { error });
+                this.logger.error(`Failed to get partial of buffer of object: ${objectName} from bucket: ${bucketName}.`, { error });
                 reject(error);
             }
         })

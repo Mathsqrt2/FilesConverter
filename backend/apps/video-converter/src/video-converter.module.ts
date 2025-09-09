@@ -8,9 +8,9 @@ import { S3Module } from '@libs/s3';
 
 @Module({
   imports: [
+    LoggerModule.forFeature([VideoConverterService]),
     ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
-    LoggerModule,
     S3Module,
   ],
   controllers: [

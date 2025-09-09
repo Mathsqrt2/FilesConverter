@@ -4,7 +4,7 @@ import { Module } from '@nestjs/common';
 
 @Module({
   imports: [
-    LoggerModule,
+    LoggerModule.forFeature([S3Service]),
   ],
   providers: [
     S3Service
