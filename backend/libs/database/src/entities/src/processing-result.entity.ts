@@ -2,9 +2,10 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from "ty
 import { ProcessingRequestEntity } from "./processing-request.entity";
 import { ProcessingPackageEntity } from "./processing-package.entity";
 import { DatabaseTablesEnum, EncodingEnum } from "@libs/enums";
+import { BasicProperties } from "../partials/basic-properties";
 
 @Entity(DatabaseTablesEnum.PROCESSING_RESULTS)
-export class ProcessingResultEntity {
+export class ProcessingResultEntity extends BasicProperties {
 
     @Column({ type: `varchar`, length: 1024, nullable: false })
     public downloadUrl: string;

@@ -62,7 +62,7 @@ export class S3Service {
         }
     }
 
-    public async createBucket(name?: string): Promise<string> {
+    public async createBucket(name?: string): Promise<[string, string]> {
         try {
             const bucketNameLengthRestriction = 63;
             if (!name) {
@@ -74,7 +74,7 @@ export class S3Service {
                 .slice(0, bucketNameLengthRestriction);
 
             await this.s3.makeBucket(name);
-            return `${process.env.MINIO_ENDPOINT}/${name}`;
+            return [name, `http://${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${name}`];
         } catch (error) {
             this.logger.error(`Failed to create new bucket in minio.`, { error });
             return null;

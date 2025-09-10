@@ -1,11 +1,19 @@
-import { graphqlUploadExpress } from 'graphql-upload/graphqlUploadExpress';
+import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs';
+import { FilesConversionResolver } from './conversion/conversion.resolver';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { FilesConversionModule } from './conversion/conversion.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { HelloResolver } from './hello.resolver';
+import { ConversionStatusModule } from './status/status.module';
+import GraphQLUpload from 'graphql-upload/GraphQLUpload.mjs';
 import { GraphQLModule } from '@nestjs/graphql';
+import { HelloResolver } from './hgw.resolver';
+import { LoggerModule } from '@libs/logger';
+import { S3Module } from '@libs/s3';
 
 @Module({
   imports: [
+    FilesConversionModule,
+    ConversionStatusModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       playground: false,
@@ -13,19 +21,26 @@ import { GraphQLModule } from '@nestjs/graphql';
       csrfPrevention: false,
       sortSchema: true,
       path: `api/v1/graphql`,
-      introspection: true
-    })
+      introspection: true,
+      resolvers: { Upload: GraphQLUpload },
+    }),
+    S3Module,
+    LoggerModule.forFeature([FilesConversionResolver]),
   ],
   providers: [
-    HelloResolver
-  ],
+    HelloResolver,
+  ]
 })
 
 export class AppModule implements NestModule {
 
   public async configure(consumer: MiddlewareConsumer): Promise<void> {
     consumer
-      .apply(graphqlUploadExpress())
+
+      .apply(graphqlUploadExpress({
+        maxFileSize: 1_000_000_000,
+        maxFiles: 10,
+      }))
       .forRoutes(`api/v1/graphql`)
   }
 

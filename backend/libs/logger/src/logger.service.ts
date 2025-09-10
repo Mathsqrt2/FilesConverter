@@ -11,7 +11,7 @@ export class LoggerService {
     private logger: Logger = new Logger()
     private settings = {
         shouldDisplayLog: true,
-        shouldSaveLog: true,
+        shouldSaveLog: false,
     }
 
     constructor(
@@ -42,7 +42,7 @@ export class LoggerService {
                 log.message = message.toString();
             }
 
-            await this.logRepository.save(log);
+            await this.logRepository?.save(log);
 
         } catch (error) {
             this.error(`Failed to save log in database.`, { error, save: false });
@@ -51,7 +51,7 @@ export class LoggerService {
 
     public log(message: unknown, config?: LoggerConfig) {
 
-        if (config.save || (config[`save`] === undefined && this.settings.shouldSaveLog)) {
+        if (config?.save || (config?.save === undefined && this.settings.shouldSaveLog)) {
             this.saveLog(message, config);
         }
 
@@ -60,7 +60,7 @@ export class LoggerService {
 
     public warn(message: unknown, config?: LoggerConfig) {
 
-        if (config.save || (config[`save`] === undefined && this.settings.shouldSaveLog)) {
+        if (config?.save || (config?.save === undefined && this.settings.shouldSaveLog)) {
             this.saveLog(message, config);
         }
 
@@ -69,8 +69,12 @@ export class LoggerService {
 
     public error(message: unknown, config?: LoggerErrorConfig) {
 
-        if (config.save || (config[`save`] === undefined && this.settings.shouldSaveLog)) {
+        if (config?.save || (config?.save === undefined && this.settings.shouldSaveLog)) {
             this.saveLog(message, config);
+        }
+
+        if(config?.error){
+            this.logger.error(config.error)
         }
 
         this.logger.error(message);
@@ -78,7 +82,7 @@ export class LoggerService {
 
     public debug(message: unknown, config?: LoggerConfig) {
 
-        if (config.save || (config[`save`] === undefined && this.settings.shouldSaveLog)) {
+        if (config?.save || (config?.save === undefined && this.settings.shouldSaveLog)) {
             this.saveLog(message, config);
         }
 

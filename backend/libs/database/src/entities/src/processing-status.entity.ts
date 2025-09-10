@@ -1,9 +1,10 @@
 import { ProcessingRequestEntity } from "./processing-request.entity";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { BasicProperties } from "../partials/basic-properties";
 import { DatabaseTablesEnum } from "@libs/enums";
 
 @Entity(DatabaseTablesEnum.PROCESSING_STATUSES)
-export class ProcessingStatusEntity {
+export class ProcessingStatusEntity extends BasicProperties {
 
     @Column({ type: `varchar`, nullable: false })
     public status: string;

@@ -8,8 +8,8 @@ export class BasicProperties {
     @CreateDateColumn({ type: `timestamptz` })
     public createdAt: Date;
 
-    @Column({ type: `timestamptz` })
-    public updatedAt: Date;
+    @Column({ type: `timestamptz`, nullable: true, default: null })
+    public updatedAt?: Date;
 
     @BeforeUpdate()
     private refreshDate() {

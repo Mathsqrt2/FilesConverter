@@ -1,10 +1,9 @@
 import { DynamicModule, Module, Type } from '@nestjs/common';
-import { LoggerService } from './logger.service';
-import { DatabaseModule } from '@libs/database';
-import { getLoggerToken } from './logger.decorator';
-import { Repository } from 'typeorm';
-import { LogEntity } from '@libs/database/entities';
+import { DatabaseModule, LogEntity } from '@libs/database';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { getLoggerToken } from './logger.decorator';
+import { LoggerService } from './logger.service';
+import { Repository } from 'typeorm';
 
 @Module({
   imports: [
@@ -13,7 +12,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 })
 
 export class LoggerModule {
-  
+
   static forFeature(targets: Type<any>[]): DynamicModule {
     const providers = targets.map((target) => ({
       provide: getLoggerToken(target),

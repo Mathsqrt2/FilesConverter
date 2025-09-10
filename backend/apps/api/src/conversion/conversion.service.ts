@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
-export class ConvertService {
+export class FilesConversionService {
 
     // This service will handle the conversion logic for different file types
     // Methods for converting audio, video, and image files will be added here

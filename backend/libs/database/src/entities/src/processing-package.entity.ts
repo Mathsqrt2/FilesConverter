@@ -1,10 +1,11 @@
-import { Column, Entity, ManyToMany } from "typeorm";
-import { DatabaseTablesEnum } from "@libs/enums/database-tables.enum";
-import { ProcessingResultEntity } from "./processing-result.entity";
 import { ProcessingRequestEntity } from "./processing-request.entity";
+import { ProcessingResultEntity } from "./processing-result.entity";
+import { BasicProperties } from "../partials/basic-properties";
+import { Column, Entity, ManyToMany } from "typeorm";
+import { DatabaseTablesEnum } from "@libs/enums";
 
 @Entity(DatabaseTablesEnum.PROCESSING_PACKAGES)
-export class ProcessingPackageEntity {
+export class ProcessingPackageEntity extends BasicProperties {
 
     @Column({ type: `int`, nullable: false })
     public packageSize: number;
