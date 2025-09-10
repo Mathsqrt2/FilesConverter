@@ -1,2 +1,2 @@
-export * from './types.module';
-export * from './types.service';
+export * from './files-conversion.types';
+export * from './logger.types';

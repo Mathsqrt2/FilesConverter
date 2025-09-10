@@ -23,6 +23,12 @@
       "./.env.d.ts"
     ],
     "paths": {
+      " @libs/models": [
+        "libs/models/src"
+      ],
+      " @libs/models/*": [
+        "libs/models/src/*"
+      ],
       "@libs/database": [
         "libs/database/src"
       ],

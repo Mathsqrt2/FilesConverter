@@ -7,7 +7,10 @@ import { S3Module } from "@libs/s3";
 
 @Module({
     imports: [
-        LoggerModule.forFeature([FilesConversionResolver, FilesConversionService]),
+        LoggerModule.forFeature([
+            FilesConversionResolver,
+            FilesConversionService
+        ]),
         DatabaseModule,
         S3Module,
     ],

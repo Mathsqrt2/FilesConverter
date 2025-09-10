@@ -11,6 +11,9 @@ export class ProcessingRequestEntity extends BasicProperties {
     @Column({ type: `varchar`, length: 32 })
     public uuid: string;
 
+    @Column({ type: `varchar`, length: 256, nullable: false })
+    public bucketName: string;
+
     @Column({ type: `boolean` })
     public isFinished: boolean;
 

@@ -73,6 +73,15 @@
         "tsConfigPath": "libs/logger/tsconfig.lib.json"
       }
     },
+    "models": {
+      "type": "library",
+      "root": "libs/models",
+      "entryFile": "index",
+      "sourceRoot": "libs/models/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/models/tsconfig.lib.json"
+      }
+    },
     "s3": {
       "type": "library",
       "root": "libs/s3",

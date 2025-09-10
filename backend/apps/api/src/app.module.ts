@@ -6,7 +6,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConversionStatusModule } from './status/status.module';
 import GraphQLUpload from 'graphql-upload/GraphQLUpload.mjs';
 import { GraphQLModule } from '@nestjs/graphql';
-import { HelloResolver } from './hgw.resolver';
 import { LoggerModule } from '@libs/logger';
 import { S3Module } from '@libs/s3';
 
@@ -27,9 +26,6 @@ import { S3Module } from '@libs/s3';
     S3Module,
     LoggerModule.forFeature([FilesConversionResolver]),
   ],
-  providers: [
-    HelloResolver,
-  ]
 })
 
 export class AppModule implements NestModule {
@@ -38,8 +34,8 @@ export class AppModule implements NestModule {
     consumer
 
       .apply(graphqlUploadExpress({
-        maxFileSize: 1_000_000_000,
-        maxFiles: 10,
+        maxFileSize: 5_000_000_000,
+        maxFiles: 20,
       }))
       .forRoutes(`api/v1/graphql`)
   }
